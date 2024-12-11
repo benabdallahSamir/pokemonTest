@@ -1,5 +1,6 @@
 "use client";
 import Pokemon from "@/classes/pokemon";
+import Loading from "@/components/Loading";
 import PokemonCard from "@/components/PokemonCard";
 import { getPokemon } from "@/requests/request";
 import { useState } from "react";
@@ -69,7 +70,7 @@ export default function Home() {
           Search
         </button>
       </div>
-      {loadingState && <section>loading</section>}
+      {loadingState && <Loading/>}
       {pokemonData && <PokemonCard pokemon={pokemonData} />}
     </main>
   );

@@ -12,7 +12,7 @@ export async function getPokemon(key: string) {
     return { status: error.response.status };
   }
 }
-export const getRelatedPokemon = async (pokemon : Pokemon) => {
+export const getRelatedPokemon = async (pokemon: Pokemon) => {
   try {
     const typesReq = pokemon.types.map(({ type }: any) => axios.get(type.url));
     const abilities = pokemon.abilities.map(({ ability }: any) => ability);
@@ -31,10 +31,45 @@ export const getRelatedPokemon = async (pokemon : Pokemon) => {
         return false;
       }).length;
     });
-
     return { status: 200, data: pokemons };
   } catch (error) {
     return { status: 10 };
   }
   // hundle result
 };
+export async function getPokemonDashboard() {
+  try {
+    const types = {} as any;
+    const {
+      data: { results },
+    } = await axios.get(`${APIURL}/type`);
+    for (const type of results) {
+      const { url, name } = type;
+      const {
+        data: { pokemon: pokemons },
+      } = await axios.get(url);
+      const uniqueAbility = new Set();
+      let baseExperience = 0;
+      let n = 0;
+      for (const pokemon of pokemons) {
+        const { url } = pokemon.pokemon;
+        const {
+          data: { abilities ,base_experience},
+        } = await axios.get(url);
+        baseExperience += base_experience;
+        n ++;
+        abilities.forEach(({ ability }: any) => {
+          uniqueAbility.add(ability.name);
+        });
+      }
+
+      types[name] = {
+        ability : Array.from(uniqueAbility),
+        baseExperience : (baseExperience/n).toFixed(2)
+      };
+    }
+    return { types };
+  } catch (error) {
+    console.log(error);
+  }
+}

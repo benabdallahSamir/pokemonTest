@@ -1,5 +1,6 @@
 "use client";
 import Pokemon from "@/classes/pokemon";
+import Loading from "@/components/Loading";
 import PokemonCard from "@/components/PokemonCard";
 import { getPokemon, getRelatedPokemon } from "@/requests/request";
 import { useParams } from "next/navigation";
@@ -85,7 +86,7 @@ function page() {
           </section>
         </>
       ) : (
-        <div>loading</div>
+        <Loading/>
       )}
     </div>
   );
