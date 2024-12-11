@@ -43,6 +43,7 @@ export async function getPokemonDashboard() {
     const {
       data: { results },
     } = await axios.get(`${APIURL}/type`);
+
     for (const type of results) {
       const { url, name } = type;
       const {
@@ -54,22 +55,25 @@ export async function getPokemonDashboard() {
       for (const pokemon of pokemons) {
         const { url } = pokemon.pokemon;
         const {
-          data: { abilities ,base_experience},
+          data: { abilities, base_experience },
         } = await axios.get(url);
+
         baseExperience += base_experience;
-        n ++;
+        n++;
         abilities.forEach(({ ability }: any) => {
           uniqueAbility.add(ability.name);
+
         });
       }
 
       types[name] = {
-        ability : Array.from(uniqueAbility),
-        baseExperience : (baseExperience/n).toFixed(2)
+        ability: Array.from(uniqueAbility),
+        baseExperience: (baseExperience / n).toFixed(2),
       };
     }
+
     return { types };
   } catch (error) {
-    console.log(error);
+    return {types : null};
   }
 }

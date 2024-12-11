@@ -2,19 +2,29 @@
 import ChartComponent from "@/components/Charr";
 import Loading from "@/components/Loading";
 import { getPokemonDashboard } from "@/requests/request";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import Swal from "sweetalert2";
 
 const page = () => {
-  const [loading, setLodingState] = useState(false);
+  const [loading, setLodingState] = useState(true);
   const [data, setData] = useState<any>(null);
   const [baseExperience, setBaseExperience] = useState<number[] | null>(null);
   const [label, setLabel] = useState<string[] | null>(null);
   const [abilities, setAbilities] = useState<number[] | null>(null);
-  console.log(data);
+  const router = useRouter();
   useEffect(() => {
     (async function () {
       setLodingState(true);
       const { types } = (await getPokemonDashboard()) as any;
+      if (!types) {
+        Swal.fire({
+          title: "error!!!",
+          text: "internal server error",
+          icon: "error",
+        });
+        router.push("/");
+      }
       setData(types);
       setLodingState(false);
     })();
@@ -32,6 +42,7 @@ const page = () => {
       setLabel(labels);
       setAbilities(abilityData);
       setBaseExperience(baseExperienceData);
+      setLodingState(false);
     }
   }, [data]);
   return (
