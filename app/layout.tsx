@@ -29,10 +29,10 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <nav className="border-b border-b-gray-300 px-3 h-14 flex items-center bg-gray-100">
+        <nav className="border-b border-b-gray-300 px-3 h-14 flex items-center justify-center bg-gray-100">
           
         <Link
-            className="py-2 rounded-md px-5 border border-gray-300 duration-300 hover:bg-blue-300 hover:border-blue-300 ml-auto mr-3"
+            className="py-2 rounded-md px-5 border border-gray-300 duration-300 hover:bg-blue-300 hover:border-blue-300 mr-3"
             href={"/"}
           >
             Search

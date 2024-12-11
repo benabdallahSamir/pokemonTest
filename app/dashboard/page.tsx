@@ -39,7 +39,7 @@ const page = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className="py-10 flex justify-evenly items-center">
+        <div className="py-10 flex justify-evenly items-center flex-col md:flex-row">
           {abilities && label && baseExperience ? (
             <>
               <ChartComponent
