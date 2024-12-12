@@ -11,7 +11,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register necessary components
 Chart.register(
   CategoryScale,
   LinearScale,
@@ -30,13 +29,12 @@ interface Props {
 
 const ChartComponent = ({ data, labels, title }: Props) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
-  console.log("enter");
   useEffect(() => {
     if (chartRef.current) {
       chartRef.current.width = 400;
       chartRef.current.height = 300;
       const chartInstance = new Chart(chartRef.current, {
-        type: "bar", // 'bar' controller is now registered
+        type: "bar",
         data: {
           labels: labels,
           datasets: [
@@ -59,8 +57,6 @@ const ChartComponent = ({ data, labels, title }: Props) => {
           },
         },
       });
-
-      // Cleanup chart on unmount or props change
       return () => {
         chartInstance.destroy();
       };

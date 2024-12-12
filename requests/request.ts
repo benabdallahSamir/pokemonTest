@@ -14,14 +14,21 @@ export async function getPokemon(key: string) {
 }
 export const getRelatedPokemon = async (pokemon: Pokemon) => {
   try {
-    const typesReq = pokemon.types.map(({ type }: any) => axios.get(type.url));
-    const abilities = pokemon.abilities.map(({ ability }: any) => ability);
-    const responses = await Promise.all(typesReq);
+    //get url of types to fetch
+    const typesReq = pokemon.types.map(({ type }: any) => type.url);
+    const responses = await Promise.all(
+      typesReq.map((typeReq) => axios.get(typeReq))
+    );
     const data = responses.map(({ data }: any) => data.pokemon);
+    // get abilities of pokemon
+    const abilities = pokemon.abilities.map(({ ability }: any) => ability);
+    // get all pokemon of types
     let allPokemons = [] as any[];
     data.forEach((ele) => (allPokemons = [...allPokemons, ...ele]));
-    allPokemons = allPokemons.map(({ pokemon }: any) => axios.get(pokemon.url));
-    const pokRes = await Promise.all([...allPokemons]);
+    allPokemons = allPokemons.map(({ pokemon }: any) => pokemon.url);
+    const pokRes = await Promise.all(
+      allPokemons.map((pokemon) => axios.get(pokemon))
+    );
     let pokemons = pokRes.map(({ data }) => new Pokemon(data));
     pokemons = pokemons.filter((ele) => {
       return ele.abilities.filter(({ ability }: any) => {
@@ -40,40 +47,46 @@ export const getRelatedPokemon = async (pokemon: Pokemon) => {
 export async function getPokemonDashboard() {
   try {
     const types = {} as any;
-    const {
+    const pokemonsData = {} as any;
+    let {
       data: { results },
     } = await axios.get(`${APIURL}/type`);
-
-    for (const type of results) {
-      const { url, name } = type;
-      const {
-        data: { pokemon: pokemons },
-      } = await axios.get(url);
+    const typeUrl = results.map(
+      (res: { url: string; name: string }) => res.url
+    );
+    const typesData = await Promise.all(
+      typeUrl.map((ele: string) => axios.get(ele))
+    );
+    const data = typesData.map((ele) => ele.data);
+    for (const type of data) {
+      const { pokemon: pokemons, name } = type;
       const uniqueAbility = new Set();
       let baseExperience = 0;
-      let n = 0;
       for (const pokemon of pokemons) {
-        const { url } = pokemon.pokemon;
-        const {
-          data: { abilities, base_experience },
-        } = await axios.get(url);
-
+        const { url, name } = pokemon.pokemon;
+        let abilities = [] as [];
+        let base_experience: any;
+        if (!pokemonsData[name]) {
+          const { data } = await axios.get(url);
+          abilities = data.abilities;
+          base_experience = data.base_experience;
+          pokemonsData[data.name] = data;
+        } else {
+          abilities = pokemonsData[name].abilities;
+          base_experience = pokemonsData[name].base_experience;
+        }
         baseExperience += base_experience;
-        n++;
         abilities.forEach(({ ability }: any) => {
           uniqueAbility.add(ability.name);
-
         });
       }
-
       types[name] = {
-        ability: Array.from(uniqueAbility),
-        baseExperience: (baseExperience / n).toFixed(2),
+        ability: Array.from(uniqueAbility).length,
+        baseExperience: (baseExperience / pokemons.length).toFixed(2),
       };
     }
-
     return { types };
   } catch (error) {
-    return {types : null};
+    return { types: null };
   }
 }

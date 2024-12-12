@@ -35,9 +35,11 @@ export default function Home() {
         Swal.fire({
           title: "error",
           icon: "error",
-          text: data as any,
+          text: `${value} not found`,
           timer: 1200,
         });
+        setValue("");
+        setInputFocus(false)
     }
   }
 

@@ -42,7 +42,7 @@ function page() {
     })();
   }, [pokemonData]);
   return (
-    <div className="h-max flex flex-col items-center py-10">
+    <div className="h-max w-full flex flex-col items-center py-10">
       {pokemonData ? (
         <>
           <header className="px-4 py-10 w-96 border rounded-md border-gray-300 flex flex-col">
@@ -79,7 +79,7 @@ function page() {
           <h1 className="text-3xl font-extrabold text-center capitalize my-10">
             pokemons has same type or ability:
           </h1>
-          <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-3 justify-center w-full h-max px-20">
+          <section className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-y-3 justify-center w-full h-max sm:px-20 ">
             {relatedPokemon.map((p, index) => (
               <PokemonCard pokemon={p} key={index} />
             ))}

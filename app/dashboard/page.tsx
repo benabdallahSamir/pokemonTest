@@ -12,7 +12,6 @@ const page = () => {
   const [baseExperience, setBaseExperience] = useState<number[] | null>(null);
   const [label, setLabel] = useState<string[] | null>(null);
   const [abilities, setAbilities] = useState<number[] | null>(null);
-  const router = useRouter();
   useEffect(() => {
     (async function () {
       setLodingState(true);
@@ -23,7 +22,6 @@ const page = () => {
           text: "internal server error",
           icon: "error",
         });
-        router.push("/");
       }
       setData(types);
       setLodingState(false);
@@ -36,7 +34,7 @@ const page = () => {
       const baseExperienceData = [] as number[];
       Object.keys(data).forEach((type) => {
         labels.push(type);
-        abilityData.push(data[type].ability.length);
+        abilityData.push(data[type].ability);
         baseExperienceData.push(data[type].baseExperience);
       });
       setLabel(labels);
