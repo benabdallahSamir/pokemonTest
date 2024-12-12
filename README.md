@@ -19,7 +19,7 @@ Before running the app, ensure you have the following installed on your system:
 
 ---
 ## how you can testing the web app
-- **[test web](https://pokemon-test-smoky.vercel.app):** i hosing web app with vercel if you want to try it with out install it in your device
+- **[test web](https://pokemon-test-six.vercel.app):** i hosing web app with vercel if you want to try it with out install it in your device
 
 ## Installation
 
