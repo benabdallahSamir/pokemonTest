@@ -15,7 +15,7 @@ A Pokémon app built with [Next.js](https://nextjs.org/) that uses the [Pokémon
 Before running the app, ensure you have the following installed on your system:
 
 - **[Node.js](https://nodejs.org/):** v18 or later
-- **[Git](https://git-scm.com/):** for cloning the repository
+- **[Git](https://git-scm.com/):** for cloning the repositoryin testing
 
 ---
 ## how you can testing the web app
